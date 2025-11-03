@@ -4,7 +4,7 @@ Base URL: `http://localhost:8080/api/v1`
 
 Status: Stable v1. Breaking changes will be introduced under `/api/v2`.
 
-## CORS
+## CORS (Cross-Origin Resource Sharing)
 
 All responses include CORS headers:
 
@@ -118,7 +118,7 @@ curl "http://localhost:8080/api/v1/weather?lat=55.6050&lon=13.0038"
 
 ## Update Frequency
 
-Demo responses can be requested as often as needed. In a real system, you might cache for 30–300 seconds.
+Demo responses can be requested as often as needed. You might cache for 30–300 seconds.
 
 ## Security (Production Idea)
 
