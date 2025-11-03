@@ -16,14 +16,56 @@ This server uses POSIX sockets. On Windows, the easiest way is to run it under W
 
 ### Windows (WSL)
 
-1) Open a PowerShell window in the project folder and run:
+Recommended: run these directly in a WSL terminal (Ubuntu shell), not in PowerShell.
 
-```powershell
-wsl make -C "c:/Academy/Front_end_API/front-end-weather-app-"
-wsl ./server
+1) Install build tools (first time only):
+
+```bash
+sudo apt-get update
+sudo apt-get install -y build-essential
 ```
 
-2) In another terminal, call the API (examples below) or open your frontend pointing at `http://localhost:8080`.
+2) Build the server:
+
+```bash
+cd /mnt/c/Academy/Front_end_API/front-end-weather-app-
+make clean
+make
+```
+
+3) Run the server (foreground):
+
+```bash
+./server
+```
+
+4) Test from another WSL terminal:
+
+```bash
+curl 'http://127.0.0.1:8080/api/v1/geo?city=Malmo'
+curl 'http://127.0.0.1:8080/api/v1/weather?lat=55.6050&lon=13.0038'
+```
+
+Optional: run in background and view logs
+
+```bash
+cd /mnt/c/Academy/Front_end_API/front-end-weather-app-
+setsid ./server >/tmp/server.log 2>&1 </dev/null &
+pgrep -a server
+tail -f /tmp/server.log
+```
+
+Stop the server
+
+```bash
+pkill server
+```
+
+Tip: If you must run from PowerShell, prefix with `wsl` and use quotes to avoid `&` being treated as an operator:
+
+```powershell
+wsl sh -lc "curl -sS 'http://127.0.0.1:8080/api/v1/weather?lat=55.6050&lon=13.0038'"
+```
 
 ### Linux/macOS
 
