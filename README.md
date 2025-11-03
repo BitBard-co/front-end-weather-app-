@@ -78,17 +78,36 @@ make
 
 ```bash
 # City → Coordinates
-curl "http://localhost:8080/api/v1/geo?city=Malmo"
+curl 'http://127.0.0.1:8080/api/v1/geo?city=Malmo'
 
 # Coordinates → Weather
-curl "http://localhost:8080/api/v1/weather?lat=55.6050&lon=13.0038"
+curl 'http://127.0.0.1:8080/api/v1/weather?lat=55.6050&lon=13.0038'
 ```
-
-More commands: `docs/curl-examples.sh`
 
 ## Postman
 
 Import `postman/collection.json` into Postman. It contains ready-made requests for the two endpoints.
+
+## WSL convenience targets
+
+Use these Make targets in your WSL terminal for quick workflows:
+
+```bash
+# Build
+make
+
+# Run in foreground
+make run
+
+# Run in background (logs in /tmp/server.log)
+make run-bg
+
+# Quick demo calls (starts server if not running)
+make demo
+
+# Stop background server
+make stop
+```
 
 ## Versioning and Stability
 
