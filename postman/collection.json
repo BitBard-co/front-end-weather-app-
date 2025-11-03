@@ -1,0 +1,44 @@
+{
+	"info": {
+		"name": "Weather API (C, v1)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"description": "Demo collection for the Weather REST API served by a tiny C HTTP server."
+	},
+	"item": [
+		{
+			"name": "City → Coordinates (Malmo)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/geo?city=Malmo",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v1", "geo"],
+					"query": [
+						{ "key": "city", "value": "Malmo" }
+					]
+				}
+			}
+		},
+		{
+			"name": "Coordinates → Weather (55.6050, 13.0038)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/weather?lat=55.6050&lon=13.0038",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["api", "v1", "weather"],
+					"query": [
+						{ "key": "lat", "value": "55.6050" },
+						{ "key": "lon", "value": "13.0038" }
+					]
+				}
+			}
+		}
+	]
+}
