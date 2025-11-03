@@ -1,27 +1,3 @@
-/*
-  Weather REST API (tiny C server) — Beginner-friendly walkthrough
-
-  What this file does (for frontend developers):
-  - Listens on http://localhost:8080
-  - Exposes two GET endpoints under /api/v1
-      1) /api/v1/geo?city=NAME
-         → returns a small JSON object with city, country, lat, lon
-      2) /api/v1/weather?lat=...&lon=...
-         → returns { tempC, description, updatedAt }
-  - Answers CORS preflight (OPTIONS) and sets CORS headers on responses
-  - Uses only in-memory demo data (no external API calls)
-
-  How to read this:
-  - We use simple C and add comments for each step so you can follow the flow
-  - If you just want to change behavior, look at the DEMO_CITIES array and
-    the handle_geo / handle_weather functions.
-  - To add a new endpoint, add a new handler and route it inside handle_request.
-
-  Platform notes:
-  - Uses POSIX sockets (Linux/macOS/WSL). For native Windows without WSL,
-    you’d port these headers and calls to Winsock2.
-*/
-
 // Socket/network headers (Linux/WSL/macOS). Provide IPv4 types and functions.
 #include <arpa/inet.h>
 #include <netinet/in.h>
