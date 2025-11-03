@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+	title: Weather REST API
+	version: 1.0.0
+	description: Simple demo weather API served by a tiny C HTTP server.
+servers:
+	- url: http://localhost:8080
+		description: Local server
+paths:
+	/api/v1/geo:
+		get:
+			summary: City to coordinates
+			description: Returns coordinates for a known demo city.
+			parameters:
+				- in: query
+					name: city
+					required: true
+					schema:
+						type: string
+						maxLength: 100
+					description: City name (case-sensitive)
+			responses:
+				'200':
+					description: OK
+					content:
+						application/json:
+							schema:
+								$ref: '#/components/schemas/GeoResponse'
+							examples:
+								example:
+									value:
+										city: Malmo
+										country: SE
+										lat: 55.605
+										lon: 13.0038
+				'400':
+					description: Bad Request
+					content:
+						application/json:
+							schema:
+								$ref: '#/components/schemas/Error'
+							examples:
+								missingCity:
+									value:
+										error:
+											code: 400
+											message: missing query param: city
+								tooLong:
+									value:
+										error:
+											code: 400
+											message: city too long (max 100)
+				'404':
+					description: Not Found
+					content:
+						application/json:
+							schema:
+								$ref: '#/components/schemas/Error'
+							examples:
+								notFound:
+									value:
+										error:
+											code: 404
+											message: city not found
+	/api/v1/weather:
+		get:
+			summary: Coordinates to weather
+			description: Returns simple current weather for given coordinates.
+			parameters:
+				- in: query
+					name: lat
+					required: true
+					schema:
+						type: number
+						format: float
+						minimum: -90
+						maximum: 90
+				- in: query
+					name: lon
+					required: true
+					schema:
+						type: number
+						format: float
+						minimum: -180
+						maximum: 180
+			responses:
+				'200':
+					description: OK
+					content:
+						application/json:
+							schema:
+								$ref: '#/components/schemas/WeatherResponse'
+							examples:
+								example:
+									value:
+										tempC: 10.5
+										description: Sunny
+										updatedAt: 2025-11-03T12:34:56Z
+				'400':
+					description: Bad Request
+					content:
+						application/json:
+							schema:
+								$ref: '#/components/schemas/Error'
+							examples:
+								missing:
+									value:
+										error:
+											code: 400
+											message: missing query params: lat, lon
+								badLat:
+									value:
+										error:
+											code: 400
+											message: lat out of range (-90..90)
+								badLon:
+									value:
+										error:
+											code: 400
+											message: lon out of range (-180..180)
+components:
+	schemas:
+		Error:
+			type: object
+			properties:
+				error:
+					type: object
+					properties:
+						code:
+							type: integer
+						message:
+							type: string
+					required: [code, message]
+			required: [error]
+		GeoResponse:
+			type: object
+			properties:
+				city:
+					type: string
+				country:
+					type: string
+				lat:
+					type: number
+					format: float
+				lon:
+					type: number
+					format: float
+			required: [city, country, lat, lon]
+		WeatherResponse:
+			type: object
+			properties:
+				tempC:
+					type: number
+					format: float
+				description:
+					type: string
+				updatedAt:
+					type: string
+					format: date-time
+			required: [tempC, description, updatedAt]
