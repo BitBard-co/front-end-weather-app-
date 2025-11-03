@@ -172,6 +172,11 @@ static void handle_geo(int client_fd, const char *query) {
         write_response(client_fd, 400, "Bad Request", "application/json", json_error(400, "missing query param: city"));
         return;
     }
+    // Limits: max city length 100 characters
+    if (strlen(city) > 100) {
+        write_response(client_fd, 400, "Bad Request", "application/json", json_error(400, "city too long (max 100)"));
+        return;
+    }
     const City *c = find_city_by_name(city);
     if (!c) {
         write_response(client_fd, 404, "Not Found", "application/json", json_error(404, "city not found"));
@@ -192,6 +197,15 @@ static void handle_weather(int client_fd, const char *query) {
     }
     double lat = atof(lat_s);
     double lon = atof(lon_s);
+    // Basic validation: valid Earth coordinate ranges
+    if (!(lat >= -90.0 && lat <= 90.0)) {
+        write_response(client_fd, 400, "Bad Request", "application/json", json_error(400, "lat out of range (-90..90)"));
+        return;
+    }
+    if (!(lon >= -180.0 && lon <= 180.0)) {
+        write_response(client_fd, 400, "Bad Request", "application/json", json_error(400, "lon out of range (-180..180)"));
+        return;
+    }
     const City *c = find_city_by_coords(lat, lon);
     char updated[64];
     iso8601_utc_now(updated, sizeof(updated));
